@@ -1,0 +1,61 @@
+<#
+.NOTES
+    *****************************************************************************
+	ETML
+	Name: GrpJoGuSe	
+    Author:	GrpJoGuSe	
+    Date: 11/05/2020
+ 	*****************************************************************************
+    Modifications
+ 	Date  : 
+ 	Author: 
+ 	Reason: 
+ 	*****************************************************************************
+.SYNOPSIS
+    Script pour...
+ 	
+.DESCRIPTION
+    Description (explanation of script)
+  	
+.PARAMETER infosPath
+    Ce paramètre permettra d'envoyer et stocker les infos dans dossier <"infos">
+    Exemple: "F:\ComponentsPC\compInfo-date.txt" 
+    
+.PARAMETER logPath
+    Ce paramètre permettra d'envoyer et stocker les logs dans dossier <"infos">
+    Exemple: "F:\Logs\date.txt" 
+
+.EXAMPLE
+    Example of using the script with results obtained
+ 	
+.LINK
+    https://enseignement.section-inf.ch/moduleICT/122/Index.html
+#>
+
+function GetSpecs {
+    #F:\ComponentsPC\compInfo_date.txt
+    $infosPath="F:\ComponentsPC\compInfo-$(Get-Date -f yyy-MM-dd.txt)"
+
+    #F:\Logs\date.txt
+    $logPath="F:\Logs\$(Get-Date -f yyy-MM-dd.txt).log"
+
+    if(Get-Date | Out-File $infosPath -Append)
+    {
+        #Code pour stocker des infos
+        $myProcessor = Get-CimInstance CIM_Processor | Format-List Name, MaxClockSpeed
+        $myHDD=Get-CimInstance CIM_diskDrive | Format-Table Model, Size 
+        
+        
+        $myProcessor | Out-File -FilePath $infosPath -Append
+        $myHDD | Out-File -FilePath $infosPath -Append
+        
+
+        Write-Output "Success, task made"
+    }
+    else {
+        #Log output
+        # Code pour stocker l'erreur dans le dossier logs¨
+        Get-Date | Out-File $logPath -Append
+        Write-Warning "Error"
+    }
+}
