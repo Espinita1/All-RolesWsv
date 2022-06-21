@@ -1,0 +1,24 @@
+;
+;  Database file 110.10.10.in-addr.arpa.dns for Default zone scope in zone 110.10.10.in-addr.arpa.
+;      Zone version:  10
+;
+
+@                       IN  SOA w2k19-dc.pappro.local. hostmaster. (
+                        		10           ; serial number
+                        		900          ; refresh
+                        		600          ; retry
+                        		86400        ; expire
+                        		3600       ) ; default TTL
+
+;
+;  Zone NS records
+;
+
+@                       NS	w2k19-dc.pappro.local.
+
+;
+;  Zone records
+;
+
+1                       1200	PTR	w2k19-dc.pappro.local.
+10                      900	PTR	PAPPROPC-001.pappro.local.

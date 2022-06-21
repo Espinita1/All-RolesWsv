@@ -1,0 +1,58 @@
+;
+;  Database file pappro.local.dns for Default zone scope in zone pappro.local.
+;      Zone version:  43
+;
+
+@                       IN  SOA w2k19-dc.pappro.local. hostmaster. (
+                        		43           ; serial number
+                        		900          ; refresh
+                        		600          ; retry
+                        		86400        ; expire
+                        		3600       ) ; default TTL
+
+;
+;  Zone NS records
+;
+
+@                       NS	w2k19-dc.pappro.local.
+
+;
+;  Zone records
+;
+
+@                       600	A	10.10.110.1
+7a3e25e5-b8a3-4426-b948-eee378576416._msdcs 600	CNAME	w2k19-dc.pappro.local.
+_kerberos._tcp.Default-First-Site-Name._sites.dc._msdcs 600	SRV	0 100 88	w2k19-dc.pappro.local.
+_ldap._tcp.Default-First-Site-Name._sites.dc._msdcs 600	SRV	0 100 389	w2k19-dc.pappro.local.
+_kerberos._tcp.pappro._sites.dc._msdcs 600	SRV	0 100 88	w2k19-dc.pappro.local.
+_ldap._tcp.pappro._sites.dc._msdcs 600	SRV	0 100 389	w2k19-dc.pappro.local.
+_kerberos._tcp.dc._msdcs 600	SRV	0 100 88	w2k19-dc.pappro.local.
+_ldap._tcp.dc._msdcs    600	SRV	0 100 389	w2k19-dc.pappro.local.
+_ldap._tcp.38950677-a937-4c05-9a36-45327bfb71ab.domains._msdcs 600	SRV	0 100 389	w2k19-dc.pappro.local.
+gc._msdcs               600	A	10.10.110.1
+_ldap._tcp.Default-First-Site-Name._sites.gc._msdcs 600	SRV	0 100 3268	w2k19-dc.pappro.local.
+_ldap._tcp.pappro._sites.gc._msdcs 600	SRV	0 100 3268	w2k19-dc.pappro.local.
+_ldap._tcp.gc._msdcs    600	SRV	0 100 3268	w2k19-dc.pappro.local.
+_ldap._tcp.pdc._msdcs   600	SRV	0 100 389	w2k19-dc.pappro.local.
+_gc._tcp.Default-First-Site-Name._sites 600	SRV	0 100 3268	w2k19-dc.pappro.local.
+_kerberos._tcp.Default-First-Site-Name._sites 600	SRV	0 100 88	w2k19-dc.pappro.local.
+_ldap._tcp.Default-First-Site-Name._sites 600	SRV	0 100 389	w2k19-dc.pappro.local.
+_gc._tcp.pappro._sites  600	SRV	0 100 3268	w2k19-dc.pappro.local.
+_kerberos._tcp.pappro._sites 600	SRV	0 100 88	w2k19-dc.pappro.local.
+_ldap._tcp.pappro._sites 600	SRV	0 100 389	w2k19-dc.pappro.local.
+_gc._tcp                600	SRV	0 100 3268	w2k19-dc.pappro.local.
+_kerberos._tcp          600	SRV	0 100 88	w2k19-dc.pappro.local.
+_kpasswd._tcp           600	SRV	0 100 464	w2k19-dc.pappro.local.
+_ldap._tcp              600	SRV	0 100 389	w2k19-dc.pappro.local.
+_kerberos._udp          600	SRV	0 100 88	w2k19-dc.pappro.local.
+_kpasswd._udp           600	SRV	0 100 464	w2k19-dc.pappro.local.
+DomainDnsZones          600	A	10.10.110.1
+_ldap._tcp.Default-First-Site-Name._sites.DomainDnsZones 600	SRV	0 100 389	w2k19-dc.pappro.local.
+_ldap._tcp.pappro._sites.DomainDnsZones 600	SRV	0 100 389	w2k19-dc.pappro.local.
+_ldap._tcp.DomainDnsZones 600	SRV	0 100 389	w2k19-dc.pappro.local.
+ForestDnsZones          600	A	10.10.110.1
+_ldap._tcp.Default-First-Site-Name._sites.ForestDnsZones 600	SRV	0 100 389	w2k19-dc.pappro.local.
+_ldap._tcp.pappro._sites.ForestDnsZones 600	SRV	0 100 389	w2k19-dc.pappro.local.
+_ldap._tcp.ForestDnsZones 600	SRV	0 100 389	w2k19-dc.pappro.local.
+PAPPROPC-001            1200	A	10.10.110.10
+w2k19-dc                A	10.10.110.1

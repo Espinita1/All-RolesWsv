@@ -1,0 +1,23 @@
+;
+;  Database file pappro.local.dns for Default zone scope in zone pappro.local.
+;      Zone version:  2
+;
+
+@                       IN  SOA w2k19-dc. hostmaster. (
+                        		2            ; serial number
+                        		900          ; refresh
+                        		600          ; retry
+                        		86400        ; expire
+                        		3600       ) ; default TTL
+
+;
+;  Zone NS records
+;
+
+@                       NS	w2k19-dc.
+
+;
+;  Zone records
+;
+
+@                       A	10.10.110.1

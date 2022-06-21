@@ -1,0 +1,18 @@
+#
+# Windows PowerShell script for AD DS Deployment
+#
+
+Import-Module ADDSDeployment
+Install-ADDSForest `
+-CreateDnsDelegation:$false `
+-DatabasePath "S:\NTDS" `
+-DomainMode "WinThreshold" `
+-DomainName "pappro.local" `
+-DomainNetbiosName "PAPPRO" `
+-ForestMode "WinThreshold" `
+-InstallDns:$true `
+-LogPath "S:\NTDS" `
+-NoRebootOnCompletion:$false `
+-SysvolPath "S:\SYSVOL" `
+-Force:$true
+

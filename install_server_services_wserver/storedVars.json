@@ -1,0 +1,13 @@
+﻿{
+    "setComputerName":  "Lol123",
+    "setDhcpStartPool":  [
+                             "10.10.10.10"
+                         ],
+    "setPWD":  "01000000d08c9ddf0115d1118c7a00c04fc297eb01000000d189eb296df4fb4eb47755693bbcd1b200000000020000000000106600000001000020000000751c8b338e2abe3ec19369f9d3fa18b2bb5aa394358bac9ad26ecf3b603082e3000000000e800000000200002000000040e2d22c8d5fa2500c4c8d277826173d47ba45c4cce962034b35acce2db72f62200000005a781e96d48e6031a31147af6b3105cfd4dc94d2545ff996147ed285cb5b2d5140000000ed7744c98cc2e669b1a1d324f9b24d135f4407b48741ebdcb048d1b8b696d604cbc2a65bcbfcf79f929d87e6705972701674022e19d893b87da9aaf366bf63d9",
+    "setIpAddress":  "10.10.10.1",
+    "setDhcpScopeName":  "mycabesona",
+    "setDnsScopeName":  "Mysona",
+    "setDhcpEndPool":  [
+                           "10.10.10.100"
+                       ]
+}

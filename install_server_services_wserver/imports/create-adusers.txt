@@ -1,0 +1,2 @@
+Get-ADUser -Filter * -SearchBase "OU=pappro,DC=pappro,DC=local" -Properties  | export-csv -path c:\Users\adminjorguz\Documents\xport_users.csv -notypeinformation -Encoding UTF8
+
