@@ -89,6 +89,7 @@ Param (
 ##############################################################################################################################################################################
 ##############################################################################################################################################################################
 #This function gets the password by asking the user, retrieved as a secure string
+<#                  Still need to revise the variables used for the main part, add the dhcp and dns creation part and everything else...#>
 function Get-Password {
     param (
             #Set a password for the AD safe password
