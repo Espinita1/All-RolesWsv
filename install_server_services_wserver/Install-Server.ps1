@@ -89,10 +89,10 @@ Param (
 ##############################################################################################################################################################################
 ##############################################################################################################################################################################
 #This function gets the password by asking the user, retrieved as a secure string
-<#                  Still need to revise the variables used for the main part, add the dhcp and dns creation part and everything else...#>
+<#                  Still need to revise the variables used for the main part, add the dhcp and dns creation part and everything else...    #>
 function Get-Password {
     param (
-            #Set a password for the AD safe password
+
     [Parameter(Mandatory = $true, HelpMessage="Enter a safe password for your AD" )]
     [Alias("p")]
     [ValidateNotNullOrEmpty()]
@@ -103,6 +103,7 @@ function Get-Password {
 
 $fileJsonParams = Test-Path -Path "$PSScriptRoot\storedVars.json" -PathType Leaf
 
+# Check if the json file with variables exists
 if(!$fileJsonParams){
 
     Write-Host "Json file storing vars doesn't exist, first run to set and store variables"
@@ -162,6 +163,31 @@ $diskNewSize = $diskSize - $desiredDiskSize
 
 ##############################################################################################################################################################################
 
+<#          
+    This funciton can be modified for future purposes maybe, it can be reused for another script
+    Still needs modifications if going to be used for another script
+    Should be modified to accept the user that launched it, 
+    concerning security if implemented right there should be no problem as for the task principal
+    executing this script, only privileged users can start scripts but if in doubt create the adequate method to control this
+#>
+function ContinueAtRestart {
+    if($pcName -cnotlike $svName)
+    {   
+        Rename-Computer $svName -Force -PassThru | Out-File -FilePath .\log.txt -Append
+        $action = New-ScheduledTaskAction -Execute "Powershell.exe" -WorkingDirectory "$scriptDir" -Argument ".\server-install.ps1"
+        $trigger = New-ScheduledTaskTrigger -AtLogOn
+        $principal = New-ScheduledTaskPrincipal -UserId "$pcName\administrator"
+        $settings = New-ScheduledTaskSettingsSet
+        $task = New-ScheduledTask -Action $action -Principal $principal -Trigger $trigger -Settings $settings
+        Register-ScheduledTask $taskName -InputObject $task
+        Get-ScheduledTaskInfo -TaskName $taskName | Out-File -FilePath .\log.txt -Append
+        Write-Debug "It is recommended to assign a gateway after the end of the script"
+        Write-Debug "This script will continue at next logon"
+        Start-Sleep -Seconds 5
+        Restart-Computer
+    }
+}
+
 
 #Get computer default ethernet net adapter and IP address
 $netAdapter = Get-NetAdapter | Where-Object {$_.InterfaceAlias -eq 'Ethernet'}
@@ -186,21 +212,7 @@ if($ipAddress -ne $newIpAddress)
 Write-Debug "Changing computer name to $svName"
 Write-Debug "Sheduling task to continue script after restart"
 
-if($pcName -cnotlike $svName)
-{   
-    Rename-Computer $svName -Force -PassThru | Out-File -FilePath .\log.txt -Append
-    $action = New-ScheduledTaskAction -Execute "Powershell.exe" -WorkingDirectory "$scriptDir" -Argument ".\server-install.ps1"
-    $trigger = New-ScheduledTaskTrigger -AtLogOn
-    $principal = New-ScheduledTaskPrincipal -UserId "$pcName\administrator"
-    $settings = New-ScheduledTaskSettingsSet
-    $task = New-ScheduledTask -Action $action -Principal $principal -Trigger $trigger -Settings $settings
-    Register-ScheduledTask $taskName -InputObject $task
-    Get-ScheduledTaskInfo -TaskName $taskName | Out-File -FilePath .\log.txt -Append
-    Write-Debug "It is recommended to assign a gateway after the end of the script"
-    Write-Debug "This script will continue at next logon"
-    Start-Sleep -Seconds 5
-    Restart-Computer
-}
+ContinueAtRestart()
 
 #Register the task 
 $taskIsRegistered = Get-ScheduledTask -TaskName $taskName
@@ -302,13 +314,8 @@ try{
 try {
     if(!($domainExists))
     {
-        $action = New-ScheduledTaskAction -Execute "Powershell.exe" -WorkingDirectory "$scriptDir" -Argument ".\server-install.ps1"
-        $trigger = New-ScheduledTaskTrigger -AtLogOn
-        $principal = New-ScheduledTaskPrincipal -UserId "$pcName\administrator"
-        $settings = New-ScheduledTaskSettingsSet
-        $task = New-ScheduledTask -Action $action -Principal $principal -Trigger $trigger -Settings $settings
-        Register-ScheduledTask $taskName -InputObject $task
-
+        
+        ContinueAtRestart
         #Default exported AD module when installing AD functions by GUI
         Import-Module ADDSDeployment
         Install-ADDSForest `
