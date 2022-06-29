@@ -45,49 +45,52 @@
 .EXAMPLE
     -
 #>
+
+
 ######################################################################## Get Parameters from the user ######################################################################
-
-Param (
-    #Set Domain Controller Computer Name
-    [Parameter(Mandatory = $true, HelpMessage="Enter a name for your DC" )]
-    [Alias("pcn")]
-    [ValidateNotNullOrEmpty()]
-    [string]$NewComputerName,
-
-    #Set IP address for your Domainc Controller
-    [Parameter(Mandatory = $true, HelpMessage="Enter an IP address for your DC" )]
-    [Alias("ip")]
-    [ValidateNotNullOrEmpty()]
-    [string]$NewIpAddress,
-
-    #Set the direct DNS scope Name
-    [Parameter(Mandatory = $true, HelpMessage="Enter a DNS scope name" )]
-    [Alias("dnssn")]
-    [ValidateNotNullOrEmpty()]
-    [string]$DnsScopeName, 
-
-    #Set the DHCP scope Name
-    [Parameter(Mandatory = $true, HelpMessage="Enter a DHCP scope name" )]
-    [Alias("dhcpsn")]
-    [ValidateNotNullOrEmpty()]
-    [string]$DhcpScopeName,
-
-    #Set the dhcp start address IP
-    [Parameter(Mandatory = $true, HelpMessage="Enter the needed DHCP address start pool for scope" )]
-    [Alias("dhcpstap")]
-    [ValidateNotNullOrEmpty()]
-    [string[]]$DhcpStartAddressPool,
-
-    #Set the DHCP end address IP
-    [Parameter(Mandatory = $true, HelpMessage="Enter the needed DHCP address end pool for scope" )]
-    [Alias("dhcpendap")]
-    [ValidateNotNullOrEmpty()]
-    [string[]]$DhcpEndAddressPool
+<#  #>
+function Get-Params{
+    Param (
+        #Set Domain Controller Computer Name
+        [Parameter(Mandatory = $true, HelpMessage="Enter a name for your DC" )]
+        [Alias("pcn")]
+        [ValidateNotNullOrEmpty()]
+        [string]$NewComputerName,
     
-    )
+        #Set IP address for your Domainc Controller
+        [Parameter(Mandatory = $true, HelpMessage="Enter an IP address for your DC" )]
+        [Alias("ip")]
+        [ValidateNotNullOrEmpty()]
+        [string]$NewIpAddress,
+    
+        #Set the direct DNS scope Name
+        [Parameter(Mandatory = $true, HelpMessage="Enter a DNS scope name" )]
+        [Alias("dnssn")]
+        [ValidateNotNullOrEmpty()]
+        [string]$DnsScopeName, 
+    
+        #Set the DHCP scope Name
+        [Parameter(Mandatory = $true, HelpMessage="Enter a DHCP scope name" )]
+        [Alias("dhcpsn")]
+        [ValidateNotNullOrEmpty()]
+        [string]$DhcpScopeName,
+    
+        #Set the dhcp start address IP
+        [Parameter(Mandatory = $true, HelpMessage="Enter the needed DHCP address start pool for scope" )]
+        [Alias("dhcpstap")]
+        [ValidateNotNullOrEmpty()]
+        [string[]]$DhcpStartAddressPool,
+    
+        #Set the DHCP end address IP
+        [Parameter(Mandatory = $true, HelpMessage="Enter the needed DHCP address end pool for scope" )]
+        [Alias("dhcpendap")]
+        [ValidateNotNullOrEmpty()]
+        [string[]]$DhcpEndAddressPool
+        
+        )
+    
+}
 
-##############################################################################################################################################################################
-##############################################################################################################################################################################
 #This function gets the password by asking the user, retrieved as a secure string
 <#                  Still need to revise the variables used for the main part, add the dhcp and dns creation part and everything else...    #>
 function Get-Password {
@@ -105,7 +108,8 @@ $fileJsonParams = Test-Path -Path "$PSScriptRoot\storedVars.json" -PathType Leaf
 
 # Check if the json file with variables exists
 if(!$fileJsonParams){
-
+    
+    Get-Params
     Write-Host "Json file storing vars doesn't exist, first run to set and store variables"
     
     $PwdGet = Get-Password
@@ -291,6 +295,9 @@ Start-Sleep -Seconds 5
 
 "Resizing disk (20GB for active directory)" | Out-File -FilePath .\log.txt -Append 
 
+<#  Maybe add dynamic vars so the space can be modified from a minimum starting memory space
+    1-DiskAllocation
+#>
 #If the disk size is over 40GB proceed, if not then skip and do nothing
 #When proceeding, resize the disk to the new size then create a new partition in
 #the unallocated size, format to NTFS and assign letter S to the new partition
@@ -311,6 +318,14 @@ try{
 
 "Installing Active Directory services" | Out-File -FilePath .\log.txt -Append 
 
+
+<#  If there's not a domain present proceed to install Active directory #>
+<#  Make this one dynamic params needed will be:
+    1-DatabasePath
+    2-DomainName
+    3-DomanNetBiosName
+    4-Sysvolpath (if specified)
+#>
 try {
     if(!($domainExists))
     {
